@@ -1,7 +1,7 @@
 var http = require('http')
 var url = require('url')
 
-http.createServer(onRequest).listen(1337);
+http.createServer(onRequest).listen(process.env.PORT || 1337);
 console.log('Server has started');
 
 function onRequest(request, response){
