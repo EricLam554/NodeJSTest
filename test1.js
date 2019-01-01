@@ -1,7 +1,28 @@
-var http = require('http');
+var http = require('http')
+var url = require('url')
 
-//create a server object:
-http.createServer(function (req, res) {
-  res.write('Hello World!'); //write a response to the client
-  res.end(); //end the response
-}).listen(8080); //the server object listens on port 8080
+http.createServer(onRequest).listen(8888);
+console.log('Server has started');
+
+function onRequest(request, response){
+  var pathName = url.parse(request.url).pathname
+  console.log('pathname' + pathName);
+  showPage(response, pathName)
+}
+
+var contentMap = {
+ '/': '<h1>Welcome to the site</h1>',
+ '/contact' : '<h1> Contact Page</h1>'
+}
+
+function showPage(response, pathName){
+  if(pathName === '/'){
+    response.writeHead(200, {'Content-Type': 'text/html'})
+    response.write(contentMap['/']);
+    response.end();
+   }else {
+    response.writeHead(404, {'Content-Type': 'text/html'})
+    response.write('404 Page not found');
+    response.end();
+  }
+}
